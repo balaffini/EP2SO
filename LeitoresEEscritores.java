@@ -23,24 +23,28 @@ public class LeitoresEEscritores {
         banco = hk;
 
         for(int l = 0; l <= 100; l++) {
-            List<Thread> t = new LinkedList<>();
-            for(int i = 0; i < 100; i++) {
-                if(i < l)
-                    t.add(new Leitor());
-                else
-                    t.add(new Escritor());
-            }
-            Collections.shuffle(t);
-            long t0 = System.currentTimeMillis();
-            t.forEach(Thread::start);
-            t.forEach(thread->{
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            long t50 = 0;
+            for (int k = 0; k < 50; k++) {
+                List<Thread> t = new LinkedList<>();
+                for (int i = 0; i < 100; i++) {
+                    if (i < l)
+                        t.add(new Leitor());
+                    else
+                        t.add(new Escritor());
                 }
-            });
-            System.out.println(System.currentTimeMillis() - t0);
+                Collections.shuffle(t);
+                long t0 = System.currentTimeMillis();
+                t.forEach(Thread::start);
+                t.forEach(thread -> {
+                    try {
+                        thread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                t50 += System.currentTimeMillis() - t0;
+            }
+            System.out.println("Tempo medio de 50 execucoes com " + l + " leitores e " + (100-l) + " escritores: " + t50/50.0 + "ms");
         }
     }
 
