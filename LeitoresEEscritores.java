@@ -1,5 +1,3 @@
-package EP2;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ public class LeitoresEEscritores {
     static List <String> banco;
 
     public static void main(String[] args) throws FileNotFoundException{
-        File file = new File("src/EP2/bd.txt");
+        File file = new File("bd.txt");
         Scanner scan = new Scanner(file);
         List <String> hk = new ArrayList<>();
         while(scan.hasNext())
