@@ -60,7 +60,7 @@ public class LeitoresEEscritores {
                 mutex.release(); //up
                 ThreadLocalRandom r = ThreadLocalRandom.current();
                 for (int i = 0; i < 100; i++)
-                    lida = banco.get(r.nextInt(100));
+                    lida = banco.get(banco.size());
                 mutex.acquire();
                 if(--leitores == 0)
                     bd.release();
