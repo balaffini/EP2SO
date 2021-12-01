@@ -61,6 +61,7 @@ public class LeitoresEEscritores {
                 ThreadLocalRandom r = ThreadLocalRandom.current();
                 for (int i = 0; i < 100; i++)
                     lida = banco.get(r.nextInt(banco.size()));
+                sleep(1);
                 mutex.acquire();
                 if(--leitores == 0)
                     bd.release();
@@ -77,9 +78,8 @@ public class LeitoresEEscritores {
             try {
                 bd.acquire();
                 ThreadLocalRandom r = ThreadLocalRandom.current();
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 100; i++)
                     banco.set(r.nextInt(banco.size()), "MODIFICADO");
-                }
                 sleep(1);
                 bd.release();
             } catch (InterruptedException e) {

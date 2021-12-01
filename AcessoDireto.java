@@ -57,6 +57,7 @@ public class AcessoDireto {
                 ThreadLocalRandom r = ThreadLocalRandom.current();
                 for (int i = 0; i < 100; i++)
                     lida = banco.get(r.nextInt(banco.size()));
+                sleep(1);
                 mutex.release(); //up
             } catch (InterruptedException e) {
                 e.printStackTrace();
