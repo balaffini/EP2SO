@@ -9,16 +9,15 @@ import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AcessoDireto {
-    static Semaphore mutex = new Semaphore(1);
-    static List <String> banco;
+    static Semaphore mutex = new Semaphore(1); //mutex para controlar o acesso no banco de dados
+    static List <String> banco = new ArrayList<>();
 
     public static void main(String[] args) throws FileNotFoundException{
         File file = new File("bd.txt");
         Scanner scan = new Scanner(file);
-        List <String> hk = new ArrayList<>();
         while(scan.hasNext())
-            hk.add(scan.nextLine());
-        banco = hk;
+            banco.add(scan.nextLine());
+        scan.close();
 
         for(int l = 0; l <= 100; l++) {
             long t50 = 0;
@@ -42,8 +41,7 @@ public class AcessoDireto {
                 });
                 t50 += System.currentTimeMillis() - t0;
             }
-            //System.out.println("Tempo medio de 50 execucoes com " + l + " leitores e " + (100-l) + " escritores: " + t50/50.0 + "ms");
-            System.out.println(t50/50.0);
+            System.out.println("Tempo medio de 50 execucoes com " + l + " leitores e " + (100-l) + " escritores: " + t50/50.0 + "ms");
         }
     }
 
@@ -53,12 +51,12 @@ public class AcessoDireto {
         @Override
         public void run() {
             try {
-                mutex.acquire(); //down
+                mutex.acquire(); //down para tentar acessar o banco de dados
                 ThreadLocalRandom r = ThreadLocalRandom.current();
                 for (int i = 0; i < 100; i++)
                     lida = banco.get(r.nextInt(banco.size()));
                 sleep(1);
-                mutex.release(); //up
+                mutex.release(); //up para liberar o bd
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
